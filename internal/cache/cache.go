@@ -13,10 +13,12 @@ type Cache interface {
 }
 
 func NewCache(cfg *config.Config) (Cache, error) {
+
 	switch cfg.CacheType {
 	case "inmemory":
 		return NewLRUCache(cfg.MaxSize), nil
-	
+	case "redis":
+		return NewRedisCache(cfg.RedisAddr, cfg.RedisPassword, cfg.RedisDB), nil
 	default:
 		return nil, errors.New("unsupported cache type")
 	}

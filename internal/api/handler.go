@@ -1,9 +1,11 @@
 package api
 
 import (
+	"log"
 	"net/http"
-	"multi-backend-caching-library/internal/cache"
 	"time"
+
+	"multi-backend-caching-library/internal/cache"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,8 +24,10 @@ func RegisterRoutes(r *gin.Engine, c cache.Cache) {
 
 func (h *CacheHandler) getCache(c *gin.Context) {
 	key := c.Param("key")
+	log.Printf("Retrieving key: %s", key)
 	value, err := h.cache.Get(key)
 	if err != nil {
+		log.Printf("Error retrieving key: %s, error: %v", key, err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "cache miss"})
 		return
 	}
@@ -41,6 +45,7 @@ func (h *CacheHandler) setCache(c *gin.Context) {
 		return
 	}
 
+	log.Printf("Setting key: %s with value: %v and TTL: %d", req.Key, req.Value, req.TTL)
 	err := h.cache.Set(req.Key, req.Value, time.Duration(req.TTL)*time.Second)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to set cache"})
@@ -60,6 +65,7 @@ func (h *CacheHandler) updateCache(c *gin.Context) {
 		return
 	}
 
+	log.Printf("Updating key: %s with value: %v and TTL: %d", req.Key, req.Value, req.TTL)
 	err := h.cache.Set(req.Key, req.Value, time.Duration(req.TTL)*time.Second)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update cache"})
@@ -70,6 +76,7 @@ func (h *CacheHandler) updateCache(c *gin.Context) {
 
 func (h *CacheHandler) deleteCache(c *gin.Context) {
 	key := c.Param("key")
+	log.Printf("Deleting key: %s", key)
 	err := h.cache.Delete(key)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete cache"})
