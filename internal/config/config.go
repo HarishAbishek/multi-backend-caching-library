@@ -7,20 +7,20 @@ import (
 )
 
 type Config struct {
-	CacheType      string
-	MaxSize        int
-	RedisAddr      string
-	RedisPassword  string
-	RedisDB        int
+	CacheType     string
+	MaxSize       int
+	RedisAddr     string
+	RedisPassword string
+	RedisDB       int
 }
 
 func LoadConfig() *Config {
 	return &Config{
-		CacheType:      getEnv("CACHE_TYPE", "inmemory"),
-		MaxSize:        getEnvAsInt("CACHE_MAX_SIZE", 100),
-		RedisAddr:      getEnv("REDIS_ADDR", "localhost:6379"),
-		RedisPassword:  getEnv("REDIS_PASSWORD", ""),
-		RedisDB:        getEnvAsInt("REDIS_DB", 0),
+		CacheType:     getEnv("CACHE_TYPE", "redis"),
+		MaxSize:       getEnvAsInt("CACHE_MAX_SIZE", 100),
+		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
+		RedisPassword: getEnv("REDIS_PASSWORD", ""),
+		RedisDB:       getEnvAsInt("REDIS_DB", 0),
 	}
 }
 
