@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: Multi-Backend Caching API
+  description: API for a multi-backend caching library with support for in-memory, Redis, and Memcached backends.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /cache/{key}:
+    get:
+      summary: Retrieve a value from the cache
+      description: Fetches the value associated with the specified key from the cache.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The key to retrieve from the cache.
+      responses:
+        200:
+          description: Successfully retrieved the value from the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+                example:
+                  key: "myKey"
+                  value: "myValue"
+        404:
+          description: The key was not found in the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "cache miss"
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "internal server error"
+
+    delete:
+      summary: Delete a value from the cache
+      description: Deletes the value associated with the specified key from the cache.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The key to delete from the cache.
+      responses:
+        200:
+          description: Successfully deleted the key from the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "cache deleted successfully"
+        404:
+          description: The key was not found in the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "key not found"
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "internal server error"
+
+  /cache:
+    post:
+      summary: Set a value in the cache
+      description: Stores a value in the cache with an optional TTL (Time to Live).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+                ttl:
+                  type: integer
+                  description: Time to live in seconds
+              required:
+                - key
+                - value
+            example:
+              key: "myKey"
+              value: "myValue"
+              ttl: 3600
+      responses:
+        200:
+          description: Successfully set the value in the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "cache set successfully"
+        400:
+          description: Invalid request body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "invalid request body"
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "internal server error"
+
+    put:
+      summary: Update a value in the cache
+      description: Updates a value in the cache with an optional TTL (Time to Live).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+                ttl:
+                  type: integer
+                  description: Time to live in seconds
+              required:
+                - key
+                - value
+            example:
+              key: "myKey"
+              value: "myUpdatedValue"
+              ttl: 3600
+      responses:
+        200:
+          description: Successfully updated the value in the cache.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "cache updated successfully"
+        400:
+          description: Invalid request body.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "invalid request body"
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: "internal server error"
+components:
+  schemas:
+    CacheItem:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        ttl:
+          type: integer
+          description: Time to live in seconds
+      required:
+        - key
+        - value

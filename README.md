@@ -6,7 +6,7 @@ This project aims to develop a robust caching library in Go that supports multip
 ## Objectives
 1. Develop an in-memory cache with LRU eviction policy.
 2. Integrate with external caches like Redis or Memcached.
-3. Design an intuitive API for setting, getting, updating, and deleting cache  entries.
+3. Design an intuitive API for setting, getting, updating, and deleting cache entries.
 4. Implement cache invalidation and expiration policies.
 5. Ensure high performance and scalability of the caching library.
 
@@ -46,11 +46,12 @@ This project aims to develop a robust caching library in Go that supports multip
 2. The application will be available at `http://localhost:8080`
 
 ## Environment Variables
-- `CACHE_TYPE`: Type of cache to use (`inmemory`, `redis`).
+- `CACHE_TYPE`: Type of cache to use (`inmemory`, `redis`, `memcached`).
 - `CACHE_MAX_SIZE`: Maximum size for the in-memory cache.
 - `REDIS_ADDR`: Address of the Redis server.
 - `REDIS_PASSWORD`: Password for the Redis server.
 - `REDIS_DB`: Redis database number.
+- `MEMCACHED_SERVERS`: Comma-separated list of Memcached servers.
 
 ## API Endpoints
 - `GET /cache/:key`: Retrieve a value from the cache.
@@ -58,9 +59,36 @@ This project aims to develop a robust caching library in Go that supports multip
 - `PUT /cache`: Update a value in the cache.
 - `DELETE /cache/:key`: Delete a value from the cache.
 
-## Testing
+## Testing Procedure
+To ensure the robustness and correctness of the multi-backend caching library, we have included unit tests, integration tests, and benchmarks. Follow the steps below to run the tests and benchmarks.
+
+## Configuration for Testing
+To run tests with different caching backends, change the CACHE_TYPE environment variable. 
+
+For example:
+
+- For in-memory caching, set CACHE_TYPE=inmemory.
+
+## Configuration for Testing
+To run tests with different caching backends, change the CACHE_TYPE environment variable. For example:
+
+- For in-memory caching, set CACHE_TYPE=inmemory.
+
+## Code run
+
+- From the Project  C:\multi-backend-caching-library >`go run cmd/main.go`
+
+## BenchMark tests
+
+- From the Project  C:\multi-backend-caching-library                  > `cd internal`
+- From the Project  C:\multi-backend-caching-library\internal         > `cd test`
+- From the Project  C:\multi-backend-caching-library\test\internal    > `go test -bench=.`
+
+## Unit Tests
+Unit tests are provided for the core components of the library, including LRU cache, Redis integration, and API handlers. To run the unit tests, execute the following command:
 - Run unit tests: `go test ./...`
 - Run integration tests: `go test -tags=integration ./test`
+
 
 ## License
 This project is licensed under the MIT License.
