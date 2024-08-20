@@ -35,7 +35,7 @@ This project aims to develop a robust caching library in Go that supports multip
 - Provide methods for manual invalidation.
 
 ## Installation and Usage
-1. Clone the repository: `git clone https://github.com/yourusername/multi-backend-caching-library.git`
+1. Clone the repository: `git clone https://github.com/HarishAbishek/multi-backend-caching-library`
 2. Navigate to the project directory: `cd multi-backend-caching-library`
 3. Build the project: `go build -o main ./cmd/main.go`
 4. Run the application: `./main`
